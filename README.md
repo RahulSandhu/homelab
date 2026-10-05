@@ -30,4 +30,4 @@ hosting a Debian 13 VM (`docker-host`) that runs the Docker services.
 
 ## Schema
 
-![Homelab schema](docs/schemas/homelab.png)
+![Homelab schema](tmp/homelab.png)
