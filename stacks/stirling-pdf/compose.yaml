@@ -1,0 +1,27 @@
+name: stirling-pdf
+
+services:
+  stirling-pdf:
+    # Stirling PDF — self-hosted PDF toolbox: merge, split, compress, rotate,
+    # OCR, convert, sign, redact, protect. Fully STATELESS — files are processed
+    # in temp and deleted; only its own settings persist.
+    image: stirlingtools/stirling-pdf:3.0.0
+    container_name: stirling-pdf
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Madrid
+    volumes:
+      # Persisted settings only (settings.yml). No documents are stored here.
+      - ./data:/configs
+    ports:
+      # Localhost only (no LAN door). Stirling's UI hardcodes <base href="/">,
+      # so it must be served at a URL ROOT — never under a subpath.
+      # Published to the tailnet by:
+      #   tailscale serve --bg --https=10000 http://127.0.0.1:8081
+      - "127.0.0.1:8081:8080"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,77 @@
+digraph homelab {
+    rankdir=TB;
+    center=true;
+    splines=polyline;
+    nodesep=0.5;
+    ranksep=0.6;
+    bgcolor="white";
+    labelloc="t";
+    label="Homelab";
+    graph [fontname="Helvetica", fontsize=18, fontcolor="#333333", color="#333333"];
+    node  [fontname="Helvetica", fontsize=9, shape=box, style="rounded,filled",
+           fillcolor="#e8f4f8", color="#01579b", penwidth=1.2, margin="0.14,0.09"];
+    edge  [fontname="Helvetica", fontsize=8, color="#333333", penwidth=1.0];
+
+    // ---------- nodes ----------
+    wan    [label="Internet", shape=ellipse, style="filled", fillcolor="#eceff1", color="#455a64", fontsize=11, fontcolor="#263238", group=spine];
+    router [label=<Consumer Router<br/><i>NAT &#183; flat LAN 192.168.1.0/24</i>>, fillcolor="#e1f5fe", color="#01579b", group=spine];
+    pve    [label=<Mini PC "pve"<br/><i>Proxmox VE 9</i>>, fillcolor="#e8f5e9", color="#2e7d32", group=spine];
+    vm     [label=<Debian 13 VM "docker-host"<br/><i>LAN 192.168.1.60</i>>, fillcolor="#e3f2fd", color="#1565c0", group=spine];
+    win    [label=<Windows 10 VM<br/><i>on-demand</i>>, style="rounded,dashed", fillcolor="#f5f5f5", color="#9e9e9e", fontcolor="#616161"];
+
+    tailnet [label="Tailscale tailnet\ntail91459b.ts.net", shape=ellipse, style="filled", fillcolor="#ede7f6", color="#4527a0", fontcolor="#311b92", fontsize=10];
+    laptop  [label=<archlinux<br/><i>laptop</i>>];
+    phone   [label=<s24-de-rahul<br/><i>phone</i>>];
+
+    caddy [label=<Caddy<br/><i>reverse proxy</i>>, fillcolor="#fff3e0", color="#e65100"];
+    adg   [label=<AdGuard Home<br/><i>DNS :53 &#183; UI :8443</i>>, fillcolor="#fff3e0", color="#e65100"];
+    spdf  [label=<Stirling PDF<br/><i>:10000</i>>, fillcolor="#fff3e0", color="#e65100"];
+    vw    [label=<Vaultwarden<br/><i>pve.tail91459b.ts.net</i>>, fillcolor="#f3e5f5", color="#4a148c"];
+
+    hp [label=<Homepage<br/><i>/</i>>, fillcolor="#f3e5f5", color="#4a148c"];
+    nd [label=<Navidrome<br/><i>/navidrome</i>>, fillcolor="#f3e5f5", color="#4a148c"];
+    pd [label=<PairDrop<br/><i>/pairdrop/</i>>, fillcolor="#f3e5f5", color="#4a148c"];
+    fb [label=<Filebrowser<br/><i>/files/</i>>, fillcolor="#f3e5f5", color="#4a148c"];
+    mt [label=<MeTube<br/><i>/metube/</i>>, fillcolor="#f3e5f5", color="#4a148c"];
+
+    zp  [label=<Zipline<br/><b>public</b>>, fillcolor="#fce4ec", color="#c2185b"];
+    fbp [label=<Filebrowser shares<br/><b>public</b> &#183; read-only>, fillcolor="#fce4ec", color="#c2185b"];
+
+    music  [label="/srv/music\n(Samba &#8594; laptop)", shape=cylinder, fillcolor="#fff8e1", color="#ff6f00", fontsize=8];
+    backup [label="/srv/backup\n(rclone mirror)", shape=cylinder, fillcolor="#fff8e1", color="#ff6f00", fontsize=8];
+
+    // ---------- ranks (top to bottom) ----------
+    { rank=same; router; zp; fbp; }
+    { rank=same; pve; win; laptop; phone; }
+    { rank=same; vm; tailnet; }
+    { rank=same; caddy; adg; spdf; vw; }
+    { rank=same; hp; nd; pd; fb; mt; }
+    { rank=same; music; backup; }
+
+    // ---------- edges ----------
+    wan -> router;
+    router -> pve;
+    pve -> vm;
+    pve -> win [style=dashed, color="#9e9e9e"];
+
+    laptop -> tailnet;
+    phone  -> tailnet;
+    tailnet -> vm;
+
+    vm -> caddy;
+    vm -> adg;
+    vm -> spdf;
+    vm -> vw;
+
+    caddy -> hp;
+    caddy -> nd;
+    caddy -> pd;
+    caddy -> fb;
+    caddy -> mt;
+
+    nd -> music  [style=dashed, arrowhead=none, color="#ff6f00"];
+    fb -> backup [style=dashed, arrowhead=none, color="#ff6f00"];
+
+    wan -> zp  [color="#c2185b", style=bold];
+    wan -> fbp [color="#c2185b", style=bold];
+}

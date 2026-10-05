@@ -1,0 +1,19 @@
+name: adguard
+
+services:
+  adguard:
+    image: adguard/adguardhome:v0.107.79
+    container_name: adguard
+    restart: unless-stopped
+    volumes:
+      # Runtime state (query log, stats) and the config (AdGuardHome.yaml).
+      - ./work:/opt/adguardhome/work
+      - ./conf:/opt/adguardhome/conf
+    ports:
+      # DNS — bound to the TAILNET IP ONLY, so there is no LAN door.
+      # (systemd-resolved keeps 127.0.0.53:53, so this does not clash.)
+      - "100.74.164.49:53:53/tcp"
+      - "100.74.164.49:53:53/udp"
+      # Install wizard / admin UI — localhost only, published to the tailnet by
+      #   tailscale serve --bg --https=8443 http://127.0.0.1:3000
+      - "127.0.0.1:3000:3000"

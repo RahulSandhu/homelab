@@ -1,0 +1,17 @@
+name: homepage
+
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:v2.4.0
+    container_name: homepage
+    restart: unless-stopped
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: docker-host.tail91459b.ts.net,docker-host,localhost,127.0.0.1,192.168.1.60
+    volumes:
+      - ./config:/app/config
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,23 @@
+name: navidrome
+
+services:
+  navidrome:
+    image: deluan/navidrome:0.64.2
+    container_name: navidrome
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      ND_MUSICFOLDER: /music
+      ND_DATAFOLDER: /data
+      ND_BASEURL: /navidrome
+    volumes:
+      - ./data:/data
+      - /srv/music:/music:ro
+    ports:
+      - "127.0.0.1:4533:4533"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

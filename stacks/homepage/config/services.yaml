@@ -1,0 +1,37 @@
+- Homelab:
+    - Proxmox:
+        icon: proxmox
+        href: https://pve.tail91459b.ts.net:8006
+        description: Proxmox VE host
+    - Vaultwarden:
+        icon: vaultwarden
+        href: https://pve.tail91459b.ts.net
+        description: Passwords
+    - Navidrome:
+        icon: navidrome
+        href: https://docker-host.tail91459b.ts.net/navidrome
+        description: Music streaming
+    - PairDrop:
+        icon: pairdrop
+        href: https://docker-host.tail91459b.ts.net/pairdrop/
+        description: Share files between devices
+    - Filebrowser:
+        icon: filebrowser
+        href: https://docker-host.tail91459b.ts.net/files/
+        description: Browse the laptop backups
+    - AdGuard Home:
+        icon: adguard-home
+        href: https://docker-host.tail91459b.ts.net:8443
+        description: DNS ad blocking (tailnet)
+    - Stirling PDF:
+        icon: stirling-pdf
+        href: https://docker-host.tail91459b.ts.net:10000/
+        description: PDF toolbox (merge, OCR, convert…)
+    - Zipline:
+        icon: zipline
+        href: https://zipline.tail91459b.ts.net
+        description: Share files by link (public)
+    - MeTube:
+        icon: metube
+        href: https://docker-host.tail91459b.ts.net/metube/
+        description: Download videos (yt-dlp)

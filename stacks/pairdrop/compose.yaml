@@ -1,0 +1,19 @@
+name: pairdrop
+
+services:
+  pairdrop:
+    image: ghcr.io/schlagmichdoch/pairdrop:v1.11.2
+    container_name: pairdrop
+    restart: unless-stopped
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Madrid
+      RATE_LIMIT: "true"
+      WS_FALLBACK: "false"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

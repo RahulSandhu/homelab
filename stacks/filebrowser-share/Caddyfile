@@ -1,0 +1,26 @@
+{
+	auto_https off
+}
+
+# The PUBLIC gate for Filebrowser share links. Only the share surface is allowed
+# through; everything else returns 404, so /files/login and /files/api/* (the
+# authenticated surface) are never public.
+#
+# Public surface (discovered from the 1.5.6 SPA, see the design spec):
+#   page    /files/public/share/<hash>
+#   assets  /files/public/static/*
+#   api     /files/public/api/*   (share/info, resources, media, office, ...)
+#
+# The upstream is the EXISTING Filebrowser container, reached over the shared
+# `proxy` Docker network. Do not point this at any other service.
+:8080 {
+	@share path /files/public/*
+
+	handle @share {
+		reverse_proxy filebrowser:80
+	}
+
+	handle {
+		respond 404
+	}
+}

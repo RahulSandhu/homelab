@@ -1,0 +1,94 @@
+name: zipline
+
+services:
+  # Tailscale sidecar — gives Zipline its OWN tailnet node (zipline.tail91459b.ts.net)
+  # so the public funnel can be scoped to it alone, leaving every other service
+  # tailnet-only. Nothing else in this stack is exposed.
+  zipline-ts:
+    image: tailscale/tailscale:v1.102.4
+    container_name: zipline-ts
+    hostname: zipline
+    restart: unless-stopped
+    environment:
+      TS_AUTHKEY: ${TS_AUTHKEY}
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+    volumes:
+      - ./ts-state:/var/lib/tailscale
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    networks:
+      - internal
+
+  zipline:
+    # Share the sidecar's network namespace: Zipline is then reachable at the
+    # tailnet IP (and later, only through the funnel).
+    image: ghcr.io/diced/zipline:4.8.0
+    container_name: zipline
+    restart: unless-stopped
+    network_mode: "service:zipline-ts"
+    depends_on:
+      zipline-ts:
+        condition: service_started
+      postgresql:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      CORE_HOSTNAME: 0.0.0.0
+      CORE_PORT: 3000
+      # --- behind Tailscale's funnel (TLS terminates at the edge; plain HTTP here) ---
+      CORE_TRUST_PROXY: "true"
+      CORE_TRUSTED_PROXIES: "127.0.0.1,::1"
+      CORE_RETURN_HTTPS_URLS: "true"
+
+      # --- hardening for a PUBLIC instance ---
+      # No signups: only the owner has an account, so only the owner can upload.
+      FEATURES_USER_REGISTRATION: "false"
+      FEATURES_OAUTH_REGISTRATION: "false"
+      # Enables "delete after N views" — i.e. true one-time links.
+      FEATURES_DELETE_ON_MAX_VIEWS: "true"
+      # Upload limits and a default expiry, so links (and files) don't linger.
+      FILES_MAX_FILE_SIZE: "1gb"
+      FILES_MAX_FILES_PER_UPLOAD: "10"
+      FILES_DEFAULT_EXPIRATION: "30d"
+      # Classify by real content, and never let uploaded HTML/JS render on our
+      # domain — serve such files as downloads instead.
+      FILES_ASSUME_MIMETYPES: "true"
+      FILES_DISABLED_TYPES: "text/html,application/javascript"
+      FILES_DISABLED_TYPES_DEFAULT: "application/octet-stream"
+      # Rate-limit the upload/shorten APIs.
+      RATELIMIT_ENABLED: "true"
+      RATELIMIT_MAX: "10"
+      RATELIMIT_WINDOW: "60"
+      DATABASE_URL: postgresql://${POSTGRESQL_USER:-zipline}:${POSTGRESQL_PASSWORD}@postgresql:5432/${POSTGRESQL_DB:-zipline}
+      DATASOURCE_TYPE: local
+      DATASOURCE_LOCAL_DIRECTORY: /zipline/uploads
+    volumes:
+      # Uploads live on the dedicated disk, never on the root disk.
+      - /srv/zipline/uploads:/zipline/uploads
+      - /srv/zipline/public:/zipline/public
+      - /srv/zipline/themes:/zipline/themes
+
+  postgresql:
+    image: postgres:16
+    container_name: zipline-db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USER:-zipline}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD:?POSTGRESQL_PASSWORD is required}
+      POSTGRES_DB: ${POSTGRESQL_DB:-zipline}
+    volumes:
+      - /srv/zipline/pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRESQL_USER:-zipline}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+networks:
+  internal:

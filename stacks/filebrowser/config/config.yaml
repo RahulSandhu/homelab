@@ -1,0 +1,33 @@
+server:
+  port: 80
+  baseURL: "/files"
+  sources:
+    - path: "/srv"
+      name: "Backup"
+
+auth:
+  methods:
+    password:
+      enabled: true
+      minLength: 8
+      signup: false
+
+# Every user defaults to READ-ONLY file permissions. The read-only bind mount
+# in compose.yaml is the hard guarantee; this keeps the UI honest. The admin
+# user (created with `-a`) can still manage settings.
+#
+# `share: true` lets the owner create PUBLIC share links (served through the
+# share-only gate on the `fileshare` node — see
+# ../../../docs/specs/2026-10-05-filebrowser-public-shares-design.md). It does NOT
+# grant write access: modify/create/delete stay false and the mount stays `ro`,
+# so a share is read-only.
+userDefaults:
+  account:
+    permissions:
+      admin: false
+      modify: false
+      share: true
+      delete: false
+      create: false
+      download: true
+      api: false
