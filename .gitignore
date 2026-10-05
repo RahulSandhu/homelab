@@ -1,18 +1,27 @@
-# Generated diagrams
+# ---------------------------------------------------------------------------
+# Homelab — ignore rules
+# ---------------------------------------------------------------------------
+
+# Generated output: compiled schema diagrams (make schemas)
 tmp/
 
 # Local-only repo guide (never committed, as in the owner's other repos)
 AGENTS.md
 
-# Secrets: never commit real environment files
+# Secrets — never commit real environment files, but keep the templates
 **/.env
 !**/.env.example
 
-# Runtime data (Vaultwarden database, attachments, etc.)
+# Runtime state
+# Per-stack data (databases, caches, saved state)
 stacks/*/data/
+# Caddy's generated config (keep only the tracked Caddyfile)
+stacks/caddy/config/
+# Tailscale sidecar state (node key material)
+stacks/*/ts-state/
 
-# Zipline's Tailscale sidecar state (contains node key material)
-stacks/zipline/ts-state/
-
-# Filebrowser-share Tailscale sidecar state (contains node key material)
-stacks/filebrowser-share/ts-state/
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
