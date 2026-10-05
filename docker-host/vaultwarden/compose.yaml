@@ -1,0 +1,27 @@
+# Vaultwarden — self-hosted Bitwarden-compatible password manager.
+#
+# Deployed on the Debian VM "docker-host" (see README.md in this directory).
+# Deliberately NEVER exposed to the public internet: access is Tailscale-only,
+# with TLS terminated by `tailscale serve` on the Proxmox host.
+#
+# Image is pinned on purpose — do not use :latest. Bump deliberately and
+# snapshot the VM first.
+
+name: vaultwarden
+
+services:
+  vaultwarden:
+    image: vaultwarden/server:1.37.3
+    container_name: vaultwarden
+    restart: unless-stopped
+    env_file:
+      # NOTE: Docker Compose interpolates `$` in this file, so the Argon2
+      # ADMIN_TOKEN must have its `$` escaped as `$$`. See .env.example.
+      - .env
+    volumes:
+      # The entire application state (SQLite DB, attachments, icons, keys).
+      - ./data:/data
+    ports:
+      # Listen on the LAN so the Proxmox host can reverse-proxy into it.
+      # Tailscale is what decides who can actually reach this port.
+      - "8080:80"

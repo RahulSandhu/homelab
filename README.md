@@ -1,89 +1,33 @@
-# homelab
+# Homelab
 
-Personal homelab on a mini PC, built to be simple, private, and easy to grow.
+A personal homelab on a mini PC: Proxmox VE hosting Docker services —
+passwords, music, file sharing, DNS ad-blocking, PDF tools and more.
 
-It runs **Vaultwarden** (a Bitwarden-compatible password manager), **Navidrome**
-(music), **PairDrop** (device-to-device sharing), **Filebrowser** (a read-only
-view of the laptop's backups), **AdGuard Home** (tailnet DNS ad-blocking),
-**Stirling PDF** (a stateless PDF toolbox), **MeTube** (`yt-dlp` downloads) and a
-**Homepage** dashboard — all reachable from anywhere over a private **Tailscale**
-tailnet and from nowhere else. No ports are opened on the router and the home IP
-is never published. The two deliberate exceptions are **Zipline** (file sharing)
-and **read-only Filebrowser share links**, each public through its own scoped
-funnel.
+## MiniPC Specs
 
-> **Status: live.** Proxmox VE 9 on the mini PC, one Debian 13 VM (`docker-host`)
-> running the services behind **Caddy**: a dashboard at
-> <https://docker-host.tail91459b.ts.net/>, Navidrome, PairDrop, Filebrowser and
-> MeTube, with AdGuard DNS (`:8443`) and Stirling PDF (`:10000`) on ports of their
-> own, plus **Vaultwarden** on its own name at <https://pve.tail91459b.ts.net> and
-> **Zipline** at <https://zipline.tail91459b.ts.net> and **read-only Filebrowser
-> share links** at <https://fileshare.tail91459b.ts.net> (two scoped funnels). The
-> VM is also the **laptop's backup destination** (`/srv/backup`, rclone over SFTP).
-> See [`docs/setup.md`](docs/setup.md).
+BOSGAME E5 — AMD Ryzen 5300U · 16 GB RAM · 1 TB NVMe. Runs Proxmox VE 9.2,
+hosting a Debian 13 VM (`docker-host`) that runs the Docker services.
 
-## Architecture at a glance
+<p align="center">
+  <img src="images/bosgame_e5.jpeg" alt="BOSGAME E5" width="360">
+</p>
 
-```
-Internet ──> Consumer Router (NAT, flat LAN 192.168.1.0/24)
-                 └── Mini PC "pve" · Proxmox VE 9 · Tailscale
-                         └── Debian 13 VM "docker-host" (192.168.1.60)
-                                 ├── Caddy ── / · /navidrome · /pairdrop/ · /files/ · /metube/
-                                 ├── AdGuard DNS (:8443 UI) · Stirling PDF (:10000)
-                                 ├── Vaultwarden ← https://pve.tail91459b.ts.net (served by pve)
-                                 ├── Zipline (own node) ── public via funnel
-                                 ├── Filebrowser share links (own node) ── public, read-only
-                                 └── /srv/backup ← rclone mirror of the laptop
+## Services
 
-Tailnet members ──WireGuard──> docker-host.tail91459b.ts.net
-  (archlinux · s24-de-rahul · any future device)
-```
+| Service            | Description                        | URL                                             |
+| ------------------ | ---------------------------------- | ----------------------------------------------- |
+| Proxmox VE         | Hypervisor host                    | https://pve.tail91459b.ts.net:8006              |
+| Homepage           | Dashboard                          | https://docker-host.tail91459b.ts.net/          |
+| Vaultwarden        | Passwords                          | https://pve.tail91459b.ts.net                   |
+| Navidrome          | Music streaming                    | https://docker-host.tail91459b.ts.net/navidrome |
+| PairDrop           | Share files between devices        | https://docker-host.tail91459b.ts.net/pairdrop/ |
+| Filebrowser        | Browse the laptop backups          | https://docker-host.tail91459b.ts.net/files/    |
+| AdGuard Home       | DNS ad-blocking (tailnet)          | https://docker-host.tail91459b.ts.net:8443      |
+| Stirling PDF       | PDF toolbox (merge, OCR, convert…) | https://docker-host.tail91459b.ts.net:10000/    |
+| MeTube             | Download videos (yt-dlp)           | https://docker-host.tail91459b.ts.net/metube/   |
+| Zipline            | Share files by link (public)       | https://zipline.tail91459b.ts.net               |
+| Filebrowser shares | Public read-only links             | https://fileshare.tail91459b.ts.net             |
 
-Full diagram: `docs/schemas/homelab.dot` (rendered to `tmp/homelab.png`).
+## Schema
 
-## Contents
-
-| Path                          | What it is                                        |
-| ----------------------------- | ------------------------------------------------- |
-| `docs/access-matrix.md`       | **What works from where** (home/away × VPN).      |
-| `docs/schemas/homelab.dot`    | Architecture diagram (Graphviz).                  |
-| `docs/setup.md`               | Step-by-step runbook (Proxmox → services → backup). |
-| `docs/specs/`                 | Design documents.                                 |
-| `docs/plans/`                 | Implementation plans.                             |
-| `stacks/vaultwarden/`         | Vaultwarden Compose stack.                        |
-| `stacks/navidrome/`           | Navidrome Compose stack.                          |
-| `stacks/caddy/`               | Reverse proxy (path routing).                     |
-| `stacks/homepage/`            | Hero dashboard at `/`.                            |
-| `stacks/pairdrop/`            | PairDrop file sharing.                            |
-| `stacks/filebrowser/`         | Read-only web GUI over the backup mirror.         |
-| `stacks/adguard/`             | DNS ad-blocking for tailnet devices.              |
-| `stacks/stirling-pdf/`        | PDF toolbox (stateless).                          |
-| `stacks/zipline/`             | File sharing — public via funnel.                 |
-| `stacks/filebrowser-share/`   | Read-only **public** Filebrowser share links.     |
-| `stacks/metube/`              | Video downloads (yt-dlp) to a staging disk.       |
-| `stacks/music-share/`         | Samba config for the music share.                 |
-| `vms/windows/`                | Windows 10 VM (on-demand) — create script + notes. |
-
-## Diagram
-
-```sh
-make schemas      # docs/schemas/*.dot -> tmp/*.png
-make clean        # remove tmp/
-```
-
-## Deploying the stack
-
-See [`docs/setup.md`](docs/setup.md) for the full runbook, and
-[`stacks/vaultwarden/README.md`](stacks/vaultwarden/README.md) for the
-service-specific steps.
-
-## Principles
-
-- **VPN-only, with two exceptions.** Tailscale is the only door for everything —
-  except **Zipline** (`stacks/zipline/`) and **Filebrowser share links**
-  (`stacks/filebrowser-share/`): deliberate, reversible, funnel-scoped decisions.
-- **Deliberate updates.** Images are pinned; changes are intentional.
-- **Snapshot before change.** Proxmox snapshots are the safety net.
-- **The homelab is the laptop's backup destination** — a one-way rclone mirror
-  at `/srv/backup` (a mirror, not a history: deletions propagate).
-  Vaultwarden keeps snapshots plus manual exports.
+![Homelab schema](docs/schemas/homelab.png)

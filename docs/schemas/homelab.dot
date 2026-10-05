@@ -37,7 +37,7 @@ digraph homelab {
     zp  [label=<Zipline<br/><b>public</b>>, fillcolor="#fce4ec", color="#c2185b"];
     fbp [label=<Filebrowser shares<br/><b>public</b> &#183; read-only>, fillcolor="#fce4ec", color="#c2185b"];
 
-    music  [label="/srv/music\n(Samba &#8594; laptop)", shape=cylinder, fillcolor="#fff8e1", color="#ff6f00", fontsize=8];
+    music  [label="/srv/music", shape=cylinder, fillcolor="#fff8e1", color="#ff6f00", fontsize=8];
     backup [label="/srv/backup\n(rclone mirror)", shape=cylinder, fillcolor="#fff8e1", color="#ff6f00", fontsize=8];
 
     // ---------- ranks (top to bottom) ----------
