@@ -18,6 +18,7 @@ digraph homelab {
     pve    [label=<Mini PC "pve"<br/><i>Proxmox VE 9</i>>, fillcolor="#e8f5e9", color="#2e7d32", group=spine];
     vm     [label=<Debian 13 VM "docker-host"<br/><i>LAN 192.168.1.60</i>>, fillcolor="#e3f2fd", color="#1565c0", group=spine];
     win    [label=<Windows 10 VM<br/><i>on-demand</i>>, style="rounded,dashed", fillcolor="#f5f5f5", color="#9e9e9e", fontcolor="#616161"];
+    ov     [label=<Debian 13 VM "overleaf"<br/><i>LAN 192.168.1.61</i>>, fillcolor="#e3f2fd", color="#1565c0"];
 
     tailnet [label="Tailscale tailnet\ntail91459b.ts.net", shape=ellipse, style="filled", fillcolor="#ede7f6", color="#4527a0", fontcolor="#311b92", fontsize=10];
     laptop  [label=<archlinux<br/><i>laptop</i>>];
@@ -35,15 +36,16 @@ digraph homelab {
     mt [label=<MeTube<br/><i>/metube/</i>>, fillcolor="#f3e5f5", color="#4a148c"];
 
     zp  [label=<Zipline<br/><b>public</b>>, fillcolor="#fce4ec", color="#c2185b"];
-    fbp [label=<Filebrowser shares<br/><b>public</b> &#183; read-only>, fillcolor="#fce4ec", color="#c2185b"];
+    fbp [label=<Filebrowser shares<br/><b>public</b>>, fillcolor="#fce4ec", color="#c2185b"];
+    ovp [label=<Overleaf<br/><b>public</b>>, fillcolor="#fce4ec", color="#c2185b"];
 
     music  [label="/srv/music", shape=cylinder, fillcolor="#fff8e1", color="#ff6f00", fontsize=8];
-    backup [label="/srv/backup\n(rclone mirror)", shape=cylinder, fillcolor="#fff8e1", color="#ff6f00", fontsize=8];
+    backup [label="/srv/backup", shape=cylinder, fillcolor="#fff8e1", color="#ff6f00", fontsize=8];
 
     // ---------- ranks (top to bottom) ----------
-    { rank=same; router; zp; fbp; }
+    { rank=same; router; zp; fbp; ovp; }
     { rank=same; pve; win; laptop; phone; }
-    { rank=same; vm; tailnet; }
+    { rank=same; vm; ov; tailnet; }
     { rank=same; caddy; adg; spdf; vw; }
     { rank=same; hp; nd; pd; fb; mt; }
     { rank=same; music; backup; }
@@ -74,4 +76,8 @@ digraph homelab {
 
     wan -> zp  [color="#c2185b", style=bold];
     wan -> fbp [color="#c2185b", style=bold];
+
+    pve -> ov;
+    ov -> ovp;
+    wan -> ovp [color="#c2185b", style=bold];
 }

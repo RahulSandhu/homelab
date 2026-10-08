@@ -1,0 +1,21 @@
+PROJECT_NAME=overleaf
+OVERLEAF_DATA_PATH=/srv/overleaf/sharelatex
+OVERLEAF_LISTEN_IP=127.0.0.1
+OVERLEAF_PORT=80
+
+# Locally built full TeX Live image; tag comes from config/version (6.3.0)
+OVERLEAF_IMAGE_NAME=overleaf-texlive
+
+SERVER_PRO=false
+SIBLING_CONTAINERS_ENABLED=false
+GIT_BRIDGE_ENABLED=false
+NGINX_ENABLED=false
+
+MONGO_ENABLED=true
+MONGO_IMAGE=mongo
+MONGO_VERSION=8.0
+MONGO_DATA_PATH=/srv/overleaf/mongo
+REDIS_ENABLED=true
+REDIS_IMAGE=redis:7.4
+REDIS_DATA_PATH=/srv/overleaf/redis
+REDIS_AOF_PERSISTENCE=true

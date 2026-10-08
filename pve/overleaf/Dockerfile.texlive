@@ -1,0 +1,2 @@
+FROM sharelatex/sharelatex:6.3.0
+RUN tlmgr update --self && tlmgr install scheme-full && tlmgr path add

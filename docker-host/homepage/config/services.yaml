@@ -35,3 +35,7 @@
         icon: metube
         href: https://docker-host.tail91459b.ts.net/metube/
         description: Download videos (yt-dlp)
+    - Overleaf:
+        icon: overleaf
+        href: https://overleaf.tail91459b.ts.net
+        description: Collaborative LaTeX (public)
