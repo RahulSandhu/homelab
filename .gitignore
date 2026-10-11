@@ -1,10 +1,1 @@
-tmp/*
-!tmp/homelab.png
 AGENTS.md
-
-**/.env
-!**/.env.example
-
-**/data/
-**/ts-state/
-docker-host/caddy/config/

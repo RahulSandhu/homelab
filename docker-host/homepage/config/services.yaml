@@ -1,32 +1,22 @@
-- Homelab:
+- Apps:
     - Proxmox:
         icon: proxmox
         href: https://pve.tail91459b.ts.net:8006
         description: Proxmox VE host
-    - Vaultwarden:
-        icon: vaultwarden
-        href: https://pve.tail91459b.ts.net
-        description: Passwords
-    - Navidrome:
-        icon: navidrome
-        href: https://docker-host.tail91459b.ts.net/navidrome
-        description: Music streaming
-    - PairDrop:
-        icon: pairdrop
-        href: https://docker-host.tail91459b.ts.net/pairdrop/
-        description: Share files between devices
-    - Filebrowser:
-        icon: filebrowser
-        href: https://docker-host.tail91459b.ts.net/files/
-        description: Browse the laptop backups
     - AdGuard Home:
         icon: adguard-home
         href: https://docker-host.tail91459b.ts.net:8443
         description: DNS ad blocking (tailnet)
-    - Stirling PDF:
-        icon: stirling-pdf
-        href: https://docker-host.tail91459b.ts.net:10000/
-        description: PDF toolbox (merge, OCR, convert…)
+
+- Files & Sharing:
+    - Filebrowser:
+        icon: filebrowser
+        href: https://docker-host.tail91459b.ts.net/files/
+        description: Browse the laptop backups
+    - PairDrop:
+        icon: pairdrop
+        href: https://docker-host.tail91459b.ts.net/pairdrop/
+        description: Share files between devices
     - Zipline:
         icon: zipline
         href: https://zipline.tail91459b.ts.net
@@ -35,7 +25,29 @@
         icon: metube
         href: https://docker-host.tail91459b.ts.net/metube/
         description: Download videos (yt-dlp)
+
+- Media:
+    - Navidrome:
+        icon: navidrome
+        href: https://docker-host.tail91459b.ts.net/navidrome
+        description: Music streaming
+
+- Productivity:
+    - Vaultwarden:
+        icon: vaultwarden
+        href: https://pve.tail91459b.ts.net
+        description: Passwords
+    - Stirling PDF:
+        icon: stirling-pdf
+        href: https://docker-host.tail91459b.ts.net:10000/
+        description: PDF toolbox (merge, OCR, convert…)
     - Overleaf:
         icon: overleaf
         href: https://overleaf.tail91459b.ts.net
         description: Collaborative LaTeX (public)
+
+- Personal:
+    - Me:
+        icon: mdi-account-school
+        href: https://docker-host.tail91459b.ts.net/me/
+        description: CV & blog

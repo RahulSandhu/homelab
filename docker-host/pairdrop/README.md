@@ -1,6 +1,11 @@
 # PairDrop
 
-Browser-to-browser file transfers (WebRTC). Served at `/pairdrop/` — the
-trailing slash matters, the assets are relative. Tailnet-only.
+Browser-to-browser file transfers (WebRTC).
 
-Deploy: `docker compose up -d`.
+- **Served at:** `https://docker-host.tail91459b.ts.net/pairdrop/` —
+  tailnet-only.
+- **Deploy:** `docker compose up -d`.
+
+## Notes
+
+- The trailing slash matters — the assets are relative.

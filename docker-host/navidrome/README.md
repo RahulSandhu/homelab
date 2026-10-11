@@ -1,6 +1,11 @@
 # Navidrome
 
-Music streaming (Subsonic API). Reads `/srv/music` read-only and is served at
-`/navidrome` behind Caddy (`ND_BASEURL=/navidrome`). Tailnet-only.
+Music streaming (Subsonic API) over `/srv/music`.
 
-Deploy: `docker compose up -d`.
+- **Served at:** `https://docker-host.tail91459b.ts.net/navidrome` —
+  tailnet-only.
+- **Deploy:** `docker compose up -d`.
+
+## Notes
+
+- Reads `/srv/music` read-only; the base URL is set in `compose.yaml`.

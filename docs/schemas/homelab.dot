@@ -34,20 +34,22 @@ digraph homelab {
     pd [label=<PairDrop<br/><i>/pairdrop/</i>>, fillcolor="#f3e5f5", color="#4a148c"];
     fb [label=<Filebrowser<br/><i>/files/</i>>, fillcolor="#f3e5f5", color="#4a148c"];
     mt [label=<MeTube<br/><i>/metube/</i>>, fillcolor="#f3e5f5", color="#4a148c"];
+    web [label=<Me<br/><i>/me/</i>>, fillcolor="#f3e5f5", color="#4a148c"];
 
     zp  [label=<Zipline<br/><b>public</b>>, fillcolor="#fce4ec", color="#c2185b"];
     fbp [label=<Filebrowser shares<br/><b>public</b>>, fillcolor="#fce4ec", color="#c2185b"];
     ovp [label=<Overleaf<br/><b>public</b>>, fillcolor="#fce4ec", color="#c2185b"];
+    webp [label=<Me<br/><b>public</b>>, fillcolor="#fce4ec", color="#c2185b"];
 
     music  [label="/srv/music", shape=cylinder, fillcolor="#fff8e1", color="#ff6f00", fontsize=8];
     backup [label="/srv/backup", shape=cylinder, fillcolor="#fff8e1", color="#ff6f00", fontsize=8];
 
     // ---------- ranks (top to bottom) ----------
-    { rank=same; router; zp; fbp; ovp; }
+    { rank=same; router; zp; fbp; ovp; webp; }
     { rank=same; pve; win; laptop; phone; }
     { rank=same; vm; ov; tailnet; }
     { rank=same; caddy; adg; spdf; vw; }
-    { rank=same; hp; nd; pd; fb; mt; }
+    { rank=same; hp; nd; pd; fb; mt; web; }
     { rank=same; music; backup; }
 
     // ---------- edges ----------
@@ -70,12 +72,14 @@ digraph homelab {
     caddy -> pd;
     caddy -> fb;
     caddy -> mt;
+    caddy -> web;
 
     nd -> music  [style=dashed, arrowhead=none, color="#ff6f00"];
     fb -> backup [style=dashed, arrowhead=none, color="#ff6f00"];
 
     wan -> zp  [color="#c2185b", style=bold];
     wan -> fbp [color="#c2185b", style=bold];
+    wan -> webp [color="#c2185b", style=bold];
 
     pve -> ov;
     ov -> ovp;

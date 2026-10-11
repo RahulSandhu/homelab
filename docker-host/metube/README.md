@@ -1,8 +1,13 @@
 # MeTube
 
-Web UI for `yt-dlp`. Downloads land on `/srv/metube` and auto-delete 24 h after
-finishing (`CLEAR_COMPLETED_AFTER=86400` **seconds** + `DELETE_FILE_ON_TRASHCAN`).
-Served at `/metube/`. This is the one image to bump regularly — `yt-dlp` must keep
-up with the sites.
+Web UI for `yt-dlp`; downloads land on `/srv/metube`.
 
-Deploy: `docker compose up -d`.
+- **Served at:** `https://docker-host.tail91459b.ts.net/metube/` —
+  tailnet-only.
+- **Deploy:** `docker compose up -d`.
+
+## Notes
+
+- Bump the image every few weeks — `yt-dlp`'s tag is a date.
+- Finished downloads auto-delete after 24 h (`CLEAR_COMPLETED_AFTER=86400`
+  **seconds** + `DELETE_FILE_ON_TRASHCAN=true`).

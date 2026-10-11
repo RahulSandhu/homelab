@@ -25,6 +25,7 @@ hosting a Debian 13 VM (`docker-host`) that runs the Docker services.
 | AdGuard Home       | DNS ad-blocking (tailnet)           | https://docker-host.tail91459b.ts.net:8443      |
 | Stirling PDF       | PDF toolbox (merge, OCR, convert…)  | https://docker-host.tail91459b.ts.net:10000/    |
 | MeTube             | Download videos (yt-dlp)            | https://docker-host.tail91459b.ts.net/metube/   |
+| Me                 | Personal CV & blog                  | https://docker-host.tail91459b.ts.net/me/       |
 | Overleaf           | Collaborative LaTeX editor (public) | https://overleaf.tail91459b.ts.net              |
 | Zipline            | Share files by link (public)        | https://zipline.tail91459b.ts.net               |
 | Filebrowser shares | Public read-only links              | https://fileshare.tail91459b.ts.net             |
