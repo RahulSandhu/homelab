@@ -36,9 +36,18 @@ services:
       OLLAMA_BASE_URL: http://100.117.51.55:11434
       WEBUI_URL: https://chat.tail91459b.ts.net
       WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY}
-      DEFAULT_MODELS: ministral-3:3b
-      # First signup becomes the admin; set to "false" after creating it.
-      ENABLE_SIGNUP: "true"
+      # Short-system-prompt variant: skips the model's ~560-token default system
+      # prompt, which made even "2+2" a 566-token request.
+      DEFAULT_MODELS: ministral-3:3b-chat
+      # The admin account already exists; no more signups.
+      ENABLE_SIGNUP: "false"
+      # Don't spend CPU on background model calls (title/tags/follow-ups).
+      ENABLE_TITLE_GENERATION: "false"
+      ENABLE_TAGS_GENERATION: "false"
+      ENABLE_FOLLOW_UP_GENERATION: "false"
+      ENABLE_AUTOCOMPLETE_GENERATION: "false"
+      ENABLE_SEARCH_QUERY_GENERATION: "false"
+      ENABLE_RETRIEVAL_QUERY_GENERATION: "false"
     volumes:
       - ./data:/app/backend/data
 

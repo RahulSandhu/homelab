@@ -3,7 +3,11 @@
 Tailnet-only chat UI for the local model on `pve`.
 
 - **Served at:** <https://chat.tail91459b.ts.net> — **tailnet-only, never funneled**.
-- **Model:** `ministral-3:3b` on `pve` (Ollama at `pve:11434`, CPU-only, ~8 tok/s).
+- **Model:** `ministral-3:3b-chat` on `pve` (Ollama at `pve:11434`, CPU-only, ~8–18 tok/s).
+  It is a thin variant of `ministral-3:3b` with a short system prompt and
+  `num_predict=384`; the stock model injects a ~560-token default system prompt.
+- **Background model calls** (title/tags/follow-up/autocomplete) are disabled in
+  `compose.yaml` so they don't queue ahead of the chat.
 - **Deploy:** fill `.env` (`TS_AUTHKEY`, `WEBUI_SECRET_KEY`), then:
 
   ```sh
