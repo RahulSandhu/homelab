@@ -26,6 +26,7 @@ hosting a Debian 13 VM (`docker-host`) that runs the Docker services.
 | Stirling PDF       | PDF toolbox (merge, OCR, convert…)  | https://docker-host.tail91459b.ts.net:10000/    |
 | MeTube             | Download videos (yt-dlp)            | https://docker-host.tail91459b.ts.net/metube/   |
 | Me                 | Personal CV & blog (public)         | https://me.tail91459b.ts.net                    |
+| Chat (Ollama)      | Local LLM chat — Ministral 3B (tailnet) | https://chat.tail91459b.ts.net              |
 | Overleaf           | Collaborative LaTeX editor (public) | https://overleaf.tail91459b.ts.net              |
 | Zipline            | Share files by link (public)        | https://zipline.tail91459b.ts.net               |
 | Filebrowser shares | Public read-only links              | https://fileshare.tail91459b.ts.net             |

@@ -51,3 +51,7 @@
         icon: mdi-account-school
         href: https://docker-host.tail91459b.ts.net/me/
         description: CV & blog
+    - Chat (Ollama):
+        icon: mdi-robot-outline
+        href: https://chat.tail91459b.ts.net
+        description: Local Ministral 3B chat (tailnet)
