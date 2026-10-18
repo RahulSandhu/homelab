@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 # Create the Windows 10 VM (101) on the Proxmox host.
-#
-# Run ON the Proxmox host as root:
-#     ISO=local:iso/Win10_22H2_EnglishInternational_x64.iso bash create.sh
-#
-# Prereq: the Windows ISO is in /var/lib/vz/template/iso/ (see README).
-# Deliberately simple: SATA disk + e1000 NIC so Windows Setup needs NO drivers.
 set -euo pipefail
 
 VMID=101

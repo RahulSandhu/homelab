@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 # Create the Overleaf VM (102) on the Proxmox host.
-# Run ON the Proxmox host as root:  bash create.sh
-# Mirrors VM 100 (docker-host): Debian 13 cloud image + cloud-init, virtio-scsi.
 set -euo pipefail
 
 VMID=102

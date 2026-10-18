@@ -1,9 +1,7 @@
 name: filebrowser-share
 
 services:
-  # Tailscale sidecar — gives this stack its OWN tailnet node ("fileshare") so the
-  # public funnel can be scoped to that node alone. The existing services on
-  # docker-host are a different node and stay tailnet-only.
+  # Own tailnet node for the public funnel.
   fileshare-ts:
     image: tailscale/tailscale:v1.102.4
     container_name: fileshare-ts
@@ -19,13 +17,10 @@ services:
       - NET_ADMIN
     devices:
       - /dev/net/tun
-    # On the shared proxy network so the gate can resolve `filebrowser` by name.
     networks:
       - proxy
 
-  # The gate: shares the sidecar's network namespace, so it is the only thing the
-  # funnel can reach. It forwards ONLY the Filebrowser public share surface to the
-  # existing instance and 404s everything else (login, admin API, the tree).
+  # Only /files/public/* is exposed.
   share-gate:
     image: caddy:2.11.4-alpine
     container_name: share-gate

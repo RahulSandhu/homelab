@@ -7,10 +7,6 @@
         icon: adguard-home
         href: https://docker-host.tail91459b.ts.net:8443
         description: DNS ad blocking (tailnet)
-    - Chat (Ollama):
-        icon: mdi-robot-outline
-        href: https://chat.tail91459b.ts.net
-        description: Local Ministral 3B chat (tailnet)
 
 - Files & Sharing:
     - Filebrowser:
