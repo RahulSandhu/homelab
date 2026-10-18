@@ -1,0 +1,10 @@
+[Unit]
+Description=Periodically ensure AdGuard DNS is published on the tailnet IP
+
+[Timer]
+OnBootSec=90s
+OnUnitActiveSec=5min
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

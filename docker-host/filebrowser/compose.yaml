@@ -1,0 +1,27 @@
+name: filebrowser
+
+services:
+  filebrowser:
+    # FileBrowser Quantum — the maintained fork; the original filebrowser/filebrowser
+    # was archived 2026-09-01 (no further releases, no security fixes).
+    image: gtstef/filebrowser:1.5.6-stable
+    container_name: filebrowser
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Madrid
+      # The image defaults this to /home/filebrowser/data/config.yaml; keep the
+      # config beside the stack instead, so ./data holds only runtime state.
+      FILEBROWSER_CONFIG: /config/config.yaml
+    volumes:
+      # The backup mirror, mounted READ-ONLY: browse and download only.
+      # A write here would be silently reverted by the next rclone sync.
+      - /srv/backup:/srv:ro
+      - ./config:/config
+      # database.db (SQLite index) lives here.
+      - ./data:/home/filebrowser/data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

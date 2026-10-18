@@ -1,0 +1,32 @@
+{
+    auto_https off
+}
+
+:8080 {
+    @pdp path /pairdrop
+    redir @pdp /pairdrop/ 302
+
+    handle_path /pairdrop* {
+        reverse_proxy pairdrop:3000
+    }
+    handle /navidrome* {
+        reverse_proxy navidrome:4533
+    }
+    # Filebrowser keeps its own /files base URL (see config/config.yaml).
+    handle /files* {
+        reverse_proxy filebrowser:80
+    }
+    # MeTube applies URL_PREFIX itself, so no prefix stripping either.
+    handle /metube* {
+        reverse_proxy metube:8081
+    }
+    # Personal site — Jekyll build with baseurl /me, served under the prefix.
+    @me path /me
+    redir @me /me/ 302
+    handle /me/* {
+        reverse_proxy me:80
+    }
+    handle {
+        reverse_proxy homepage:3000
+    }
+}

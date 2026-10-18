@@ -1,0 +1,8 @@
+[Unit]
+Description=Ensure AdGuard DNS is published on the tailnet IP
+After=docker.service tailscaled.service
+Wants=docker.service tailscaled.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/adguard-ensure

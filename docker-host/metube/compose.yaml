@@ -1,0 +1,39 @@
+name: metube
+
+services:
+  metube:
+    # MeTube — a web UI for yt-dlp. Downloads land on the dedicated disk and are
+    # removed automatically: a Completed job clears itself after 24 h and takes its
+    # file with it (see README.md).
+    image: ghcr.io/alexta69/metube:2026.09.28
+    container_name: metube
+    restart: unless-stopped
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Madrid
+      # Served under a subpath by Caddy. No prefix stripping — MeTube applies
+      # URL_PREFIX itself (same pattern as Navidrome / Filebrowser).
+      URL_PREFIX: /metube
+      # Clearing a job from Completed also deletes the FILE from disk.
+      DELETE_FILE_ON_TRASHCAN: "true"
+      # Auto-clear a Completed job after 24 h. NOTE: upstream counts SECONDS, not
+      # minutes. Together with the flag above this deletes the file too, so the
+      # staging disk empties itself. Covers finished AND failed jobs.
+      CLEAR_COMPLETED_AFTER: "86400"
+      MAX_CONCURRENT_DOWNLOADS: "3"
+      # Keep the SSRF guard ON (never fetch private/internal addresses), and keep
+      # per-download yt-dlp overrides OFF — that flag can run commands in the
+      # container and is for trusted users only.
+      ALLOW_PRIVATE_ADDRESSES: "false"
+      ALLOW_YTDL_OPTIONS_OVERRIDES: "false"
+      DEFAULT_THEME: auto
+    volumes:
+      # Downloads live on their own disk, never the VM's root disk.
+      - /srv/metube/downloads:/downloads
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,3 @@
+[submodule "docker-host/me"]
+	path = docker-host/me
+	url = https://github.com/RahulSandhu/me.git
