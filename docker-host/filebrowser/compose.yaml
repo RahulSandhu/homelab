@@ -3,7 +3,7 @@ name: filebrowser
 services:
   filebrowser:
     # Maintained fork; the original is archived.
-    image: gtstef/filebrowser:1.5.6-stable
+    image: gtstef/filebrowser:1.5.8-stable
     container_name: filebrowser
     restart: unless-stopped
     environment:

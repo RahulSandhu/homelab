@@ -5,7 +5,7 @@ services:
     # Stirling PDF — self-hosted PDF toolbox: merge, split, compress, rotate,
     # OCR, convert, sign, redact, protect. Fully STATELESS — files are processed
     # in temp and deleted; only its own settings persist.
-    image: stirlingtools/stirling-pdf:3.0.0
+    image: stirlingtools/stirling-pdf:3.3.0
     container_name: stirling-pdf
     restart: unless-stopped
     environment:
