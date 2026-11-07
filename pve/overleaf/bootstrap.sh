@@ -4,7 +4,7 @@ set -euo pipefail
 
 TK=/opt/overleaf-toolkit
 SHARE=/srv/overleaf
-OVERLEAF_VERSION=6.3.0
+OVERLEAF_VERSION=6.3.2
 IMAGE=overleaf-texlive
 SRC="$(cd "$(dirname "$0")" && pwd)"
 
